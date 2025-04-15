@@ -6,10 +6,11 @@ const category = document.getElementById("category");
 
 // Seleciona os elementos da lista
 const expenseList = document.querySelector("ul");
+const expensesQuantity = document.querySelector("aside header p span");
 
 // Captura o evento de input para formatar o valor.
 amount.oninput = () => {
-  // Obtém o valor atual do input e remove os caracteres não númericos.
+  // Obtém o valor atual do input e remove os caracteres não numéricos.
   let value = amount.value.replace(/\D/g, "");
 
   // Transforma o valor em centavos.
@@ -48,6 +49,7 @@ form.onsubmit = (event) => {
   expenseAdd(newExpense);
 };
 
+// Adiciona um novo item na lista.
 function expenseAdd(newExpense) {
   try {
     // Cria o elemento para adicionar o item (li) na lista (ul).
@@ -59,7 +61,7 @@ function expenseAdd(newExpense) {
     expenseIcon.setAttribute("src", `img/${newExpense.category_id}.svg`);
     expenseIcon.setAttribute("alt", newExpense.category_name);
 
-    // Cria a info da despesea.
+    // Cria a info da despesa.
     const expenseInfo = document.createElement("div");
     expenseInfo.classList.add("expense-info");
 
@@ -92,8 +94,27 @@ function expenseAdd(newExpense) {
 
     // Adiciona o item na lista.
     expenseList.append(expenseItem);
+
+    // Atualiza os totais.
+    updateTotals();
   } catch (error) {
     alert("Não foi possível atualizar a lista de despesas.");
     console.log(error);
+  }
+}
+
+// Atualiza os totais.
+function updateTotals() {
+  try {
+    // Recupera todos os itens (li) da lista (ul).
+    const items = expenseList.children;
+
+    // Atualiza a quantidade de itens da lista.
+    expensesQuantity.textContent = `${items.length} ${
+      items.length > 1 ? "despesas" : "despesa"
+    }`;
+  } catch (error) {
+    console.log(error);
+    alert("Não foi possível atualizar os totais.");
   }
 }
